@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766323957296",
+    "project_id": "mateologist-eaa92",
+    "storage_bucket": "mateologist-eaa92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766323957296:android:be5d817ade820a38b257f5",
+        "android_client_info": {
+          "package_name": "com.example.mateologist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJUzfK7KtTuDq0wV-Y_Bht0PELALegUPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
