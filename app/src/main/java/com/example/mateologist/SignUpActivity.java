@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private EditText signupEmail, signupPassword;
+    private EditText signupEmail, signupPassword, confirmPassword;
     private Button signupButton;
     private TextView loginRedirectText;
 
@@ -33,25 +33,44 @@ public class SignUpActivity extends AppCompatActivity {
         signupPassword = findViewById(R.id.signup_password);
         signupButton = findViewById(R.id.signup_button);
         loginRedirectText = findViewById(R.id.loginRedirect);
+        confirmPassword = findViewById(R.id.signup_confirmpassword);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String user = signupEmail.getText().toString().trim();
                 String pass = signupPassword.getText().toString().trim();
+                String confirmpass = confirmPassword.getText().toString().trim();
 
                 if(user.isEmpty()){
                     signupEmail.setError("Email cannot be empty");
                 }
                 if(pass.isEmpty()){
                     signupPassword.setError("Password cannot be empty");
-                } else {
+                }if(!confirmpass.equals(pass)){
+                    confirmPassword.setError("Password must match");
+                }
+                else {
                     auth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(SignUpActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+
+                                auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(SignUpActivity.this, "SignUp Successful, please verify you email address", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(SignUpActivity.this, EmailVerify.class);
+                                            intent.putExtra("Password",pass);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Toast.makeText(SignUpActivity.this, "SignUp Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             } else {
                                 Toast.makeText(SignUpActivity.this, "SignUp Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
