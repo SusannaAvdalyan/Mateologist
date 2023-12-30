@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
-                                            Toast.makeText(SignUpActivity.this, "SignUp Successful, please verify you email address", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUpActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
 
                                             Intent intent = new Intent(SignUpActivity.this, EmailVerify.class);
                                             intent.putExtra("Password",pass);

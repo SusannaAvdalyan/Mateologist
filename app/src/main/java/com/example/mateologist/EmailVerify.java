@@ -33,7 +33,6 @@ public class EmailVerify extends AppCompatActivity {
         Toast.makeText(EmailVerify.this, R.string.if_open_email, Toast.LENGTH_SHORT).show();
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            openEmail();
         }, 2000);
         new CountDownTimer(Integer.MAX_VALUE, 3000) {
             public void onTick(long millisUntilFinished) {
@@ -43,15 +42,12 @@ public class EmailVerify extends AppCompatActivity {
                     password = intent.getStringExtra("Password");
                 }
                 auth.signInWithEmailAndPassword(auth.getCurrentUser().getEmail(), password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                Toast.makeText(EmailVerify.this, "Task is successful", Toast.LENGTH_SHORT).show();
                 if (auth.getCurrentUser().isEmailVerified()) {
                     Toast.makeText(EmailVerify.this, "Is verified", Toast.LENGTH_SHORT).show();
                     cancel();
-                    startActivity(new Intent(EmailVerify.this, LoginActivity.class));
+                    startActivity(new Intent(EmailVerify.this, MainActivity.class));
                     finish();
                 }
-            }
 
                 });
 
@@ -60,23 +56,5 @@ public class EmailVerify extends AppCompatActivity {
             }
         }.start();
 
-    }
-    private void openEmail(){
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.if_open_email)
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes, (dialog, id) -> {
-                    finish();
-                    Uri webpage = Uri.parse("https://mail.google.com/");
-                    Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
-                    startActivity(Intent.createChooser(webIntent, "Email"));
-                })
-                .setNegativeButton(R.string.no, (dialog, id) -> {
-                    dialog.cancel();
-                });
-        AlertDialog alert = builder.create();
-        alert.setTitle(R.string.if_open_email);
-        alert.show();
     }
 }
